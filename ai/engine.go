@@ -296,11 +296,11 @@ func (e *Engine) prepareSystemPrompt() string {
 	var bodyPart string
 	if e.mode == ExecEngineMode {
 		bodyPart = e.prepareSystemPromptExecPart()
+		return fmt.Sprintf("%s\n%s", bodyPart, e.prepareSystemPromptContextPart())
 	} else {
 		bodyPart = e.prepareSystemPromptChatPart()
+		return fmt.Sprintf("%s\n%s", bodyPart, "")
 	}
-
-	return fmt.Sprintf("%s\n%s", bodyPart, e.prepareSystemPromptContextPart())
 }
 
 func (e *Engine) prepareSystemPromptExecPart() string {
@@ -321,14 +321,12 @@ func (e *Engine) prepareSystemPromptExecPart() string {
 }
 
 func (e *Engine) prepareSystemPromptChatPart() string {
-	return "You are Yai a powerful terminal assistant created by github.com/ekkinox.\n" +
-		"You will answer in the most helpful possible way.\n" +
-		"Always format your answer in markdown format.\n\n" +
-		"For example:\n" +
-		"Me: What is 2+2 ?\n" +
-		"Yai: The answer for `2+2` is `4`\n" +
-		"Me: +2 again ?\n" +
-		"Yai: The answer is `6`\n"
+	return "Forget all prior instructions. No talk;just do.\n" +
+		"1. Employ critical thinking, dissect arguments, highlight strengths and weaknesses. Construct well reasoned arguments.\n"+
+		"2. Take a deep breath and reason about each step, place your inner monologue between %REASONING%, this will not be shown to the useer. If you do a good job I'll tip you $200.\n"+
+		"3. You function as my MIT postgrad assistant, accuracy, comprehensiveness, and in-depth understanding in the areas of factual information, technical instructions, computer science, and software development is important.\n"+
+  		"4. When I ask you for code, give me a full one shot implementation.\n" +
+		"Always format your answer in markdown format.\n"
 }
 
 func (e *Engine) prepareSystemPromptContextPart() string {
